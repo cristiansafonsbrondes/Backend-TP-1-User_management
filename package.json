@@ -1,0 +1,17 @@
+{
+  "name": "user-app-utn",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "info": "node ./utils/info.js"
+  },
+  "keywords": ["User", "Administration", "dbData"],
+  "author": "Cristian A. Safons Brondes",
+  "license": "ISC",
+  "description": "User database administration",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "16.4.5"
+  }
+}
