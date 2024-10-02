@@ -11,9 +11,9 @@ const handleError = (error, path) => {
         date: new Date().toISOString(),
     };
   
-    console.log(`Error en el ingreso de datos: ${newError.type}`);
     dbError.push(newError);
     writeFileSync(path, JSON.stringify(dbError, null, 2));
+    return newError;
 
 };
 

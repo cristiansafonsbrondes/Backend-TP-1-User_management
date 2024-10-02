@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 // Averiguar como "activar" la lectura de las variables de entorno del archivo .env (dotenv)
 import { handleError } from "./utils/handleError.js";
 import { emailValidated, validatedName, validatedLastname, validatedPassword } from "./utils/userControl.js";
-import { error } from "node:console";
+import { Console, error } from "node:console";
 import { CLIENT_RENEG_LIMIT } from "node:tls";
 //--------------------------------------------------------------
 
@@ -82,28 +82,28 @@ const addUser = async (name, lastname, email, password) => {
     const allvalid = [validatedName(name), validatedLastname(lastname), emailValidated(email), validatedPassword(password)].every(valid => valid);
 
     if (allvalid) {
+      return ("Los datos suministrados no cumplen con lo solicitado")
+    }
 
-      const hashPassword = await bcrypt.hash(password, 10);
+    const hashPassword = await bcrypt.hash(password, 10);
 
-      const newUser = {
-        id: randomUUID(),
-        name,
-        lastname,
-        email,
-        password,
-        passwordhash: hashPassword,
-        isLoggedIn: false,
-        createdUser: new Date().toISOString(),
-        updatedUser: false,
-      };
-      const usersData = getUsers(PATH_FILE_USER);
-
-      usersData.push(newUser);
-
-      writeFileSync(PATH_FILE_USER, JSON.stringify(usersData, null, 2));
+    const newUser = {
+      id: randomUUID(),
+      name,
+      lastname,
+      email,
+      password,
+      passwordhash: hashPassword,
+      isLoggedIn: false,
+      createdUser: new Date().toISOString(),
+      updatedUser: false,
     };
 
-    return ("Los datos suministrados no cumplen con lo solicitado")
+    const usersData = getUsers(PATH_FILE_USER);
+
+    usersData.push(newUser);
+
+    writeFileSync(PATH_FILE_USER, JSON.stringify(usersData, null, 2));
 
   } catch (error) {
     const objError = handleError(error, PATH_FILE_ERROR);
@@ -139,8 +139,8 @@ const updateUser = async (id, name, lastname, email, password) => {
       if (validPassword) {
         userById.passwordhash = await bcrypt.hash(password, 10);
         userById.password = password;
-        };
       };
+    };
 
     userById.updatedUser = new Date().toISOString();
 
@@ -156,7 +156,7 @@ const updateUser = async (id, name, lastname, email, password) => {
   };
 };
 
-console.log(updateUser("ce0db2c1-5988-462f-8ad9-f9436ad70721", "", "SBone", "","Password4321"));
+// console.log(updateUser("ce0db2c1-5988-462f-8ad9-f9436ad70721", "", "SBone", "","Password4321"));
 
 // METODO 5 ---------------------------------------------------------------
 const deleteUser = (id) => {
